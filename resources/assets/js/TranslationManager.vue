@@ -51,22 +51,23 @@
       </div>
       <div
         class="tag"
-        @click="selectTag('locale', null)"
+        @click="selectFilter('locale', null)"
       >
         Reset
       </div>
     </div>
-    <div class="snippet__header snippet__headerrow"><div class="snippet__namespace">
-      Namespace
-    </div>
-      <div class="snippet__preview">
-        Text
+    <div class="snippet__header snippet__headerrow">
+      <div class="snippet__locale">
+        locale
       </div>
       <div class="snippet__key">
         key
       </div>
-      <div class="snippet__locale">
-        locale
+      <div class="snippet__namespace">
+        Namespace
+      </div>
+      <div class="snippet__preview">
+        Text
       </div>
       <div class="snippet__actions"/>
     </div>

@@ -1,6 +1,9 @@
 <template>
   <div class="snippet">
     <div class="snippet__header">
+      <div class="snippet__locale">
+        {{ item.locale }}
+      </div>
       <div class="snippet__key">
         {{ item.key }}
       </div>
@@ -9,9 +12,6 @@
       </div>
       <div class="snippet__preview">
         {{ item.value | truncate(40) }}
-      </div>
-      <div class="snippet__locale">
-        {{ item.locale }}
       </div>
       <div class="snippet__actions">
         <div
@@ -83,6 +83,7 @@ export default {
   display: flex;
   align-items: center;
   background-color: #f5f5f5;
+  border-bottom: 1px solid #eaeaea;
   padding: 10px 10px;
 }
 .snippet__headerrow {
@@ -90,22 +91,22 @@ export default {
   border-bottom: 2px solid #ececec;
 }
 .snippet__namespace {
-  flex: 0 0 230px;
+  flex: 0 0 120px;
   color: #b7b7b7;
 }
 .snippet__toggle {
   padding: 5px 10px;
-  border: 2px solid #b7f17e;
+  border: 1px solid #22a7f0;
   cursor: pointer;
 }
 .snippet__locale {
-  flex: 0 0 100px;
+  flex: 0 0 50px;
 }
 .snippet__preview {
   flex: 1;
 }
 .snippet__key {
-  flex: 0 0 180px;
+  flex: 0 0 210px;
   height: 100%;
   word-wrap: break-word;
   font-weight: bold;
@@ -115,11 +116,6 @@ export default {
 
 .snippet__actions {
   justify-self: flex-end;
-}
-
-.snippet__body {
-  /* padding: 20px; */
-  /* background-color: #333; */
 }
 </style>
 

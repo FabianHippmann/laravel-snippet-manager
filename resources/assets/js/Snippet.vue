@@ -1,29 +1,41 @@
 <template>
-    <div class="snippet">
-    	<div class="snippet__header">
-            <div class="snippet__namespace">
-                {{item.namespace}}/
-            </div>
-            <div class="snippet__key">
-                {{item.key}}
-            </div>
-            <div class="snippet__preview">
-                {{item.value | truncate(40)}}
-            </div>
-            <div class="snippet__locale">
-                {{item.locale}}
-            </div>
-            <div class="snippet__actions">
-                <div class="snippet__toggle" @click="toggle">Show</div>
-                <div class="snippet__save" @click="save" v-show="editorToggleState && showSave">Speichern</div>
-            </div>
+  <div class="snippet">
+    <div class="snippet__header">
+      <div class="snippet__key">
+        {{ item.key }}
       </div>
-		<div class="snippet__body" v-if="showEditor">
-          <div class="snippet__editor" v-show="editorToggleState">
-              <editor :id="editorId" :value="item.value" v-on:input="updateValue"></editor>
-          </div>
+      <div class="snippet__namespace">
+        {{ item.namespace }}
+      </div>
+      <div class="snippet__preview">
+        {{ item.value | truncate(40) }}
+      </div>
+      <div class="snippet__locale">
+        {{ item.locale }}
+      </div>
+      <div class="snippet__actions">
+        <div
+          class="snippet__toggle"
+          @click="toggle">Show</div>
+        <div
+          class="snippet__save"
+          @click="save"
+          v-show="editorToggleState && showSave">Speichern</div>
       </div>
     </div>
+    <div
+      class="snippet__body"
+      v-if="showEditor">
+      <div
+        class="snippet__editor"
+        v-show="editorToggleState">
+        <editor
+          :id="editorId"
+          :value="item.value"
+          @input="updateValue"/>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -73,6 +85,10 @@ export default {
   background-color: #f5f5f5;
   padding: 10px 10px;
 }
+.snippet__headerrow {
+  background-color: #fff;
+  border-bottom: 2px solid #ececec;
+}
 .snippet__namespace {
   flex: 0 0 230px;
   color: #b7b7b7;
@@ -94,8 +110,6 @@ export default {
   word-wrap: break-word;
   font-weight: bold;
   padding: 5px 10px;
-  background-color: #f5f5f5;
-  /* color: #fff; */
   word-break: break-all;
 }
 

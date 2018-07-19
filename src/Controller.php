@@ -10,6 +10,7 @@ use Moonshiner\SnippetManager\Models\Snippet;
 use Artisan;
 use App;
 use Cache;
+
 class Controller extends BaseController
 {
     /** @var \Moonshiner\SnippetManager\SnippetManager  */
@@ -21,26 +22,35 @@ class Controller extends BaseController
 
     public function getView()
     {
-       return view('snippet-manager::index');
+        return view('snippet-manager::index');
     }
-    public function index(){
+    public function index()
+    {
         $allTranslations = Snippet::take(10)->get();
 
         return $allTranslations;
     }
 
-    public function search(){
+    public function search()
+    {
         $allTranslations = Snippet::where('value', 'LIKE', '%'.request()->input('s', '').'%')->orWhere('key', 'LIKE', '%'.request()->input('s', '').'%')->get();
 
         return $allTranslations;
     }
-    public function update(Request $request, Snippet $snippet){
+    public function groups()
+    {
+        $namespaces = Snippet::select('namespace')->distinct()->get();
+        $locales = Snippet::select('locale')->distinct()->get();
 
+        return ['data' => ['locales' => $locales, 'namespaces' => $namespaces]];
+    }
+
+    public function update(Request $request, Snippet $snippet)
+    {
         $snippet->value = $request->input('value', '');
-        $path = [App::getLocale(),$snippet->namespace, $snippet->key];
-
+        $path = [$snippet->locale,$snippet->namespace, $snippet->key];
         $storeKey = implode('/', $path);
-
+        Cache::flush($storeKey);
         Cache::put($storeKey, $snippet->value);
         $this->clearCache();
 
@@ -60,7 +70,8 @@ class Controller extends BaseController
         return array_unique($locales);
     }
 
-    public function clearCache(){
+    public function clearCache()
+    {
         Artisan::call('view:clear');
     }
 }

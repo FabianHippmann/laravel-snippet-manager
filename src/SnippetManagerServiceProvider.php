@@ -7,9 +7,9 @@ use Illuminate\Support\ServiceProvider;
 
 use Blade;
 use App;
+
 class SnippetManagerServiceProvider extends ServiceProvider
 {
-
     protected $defer = false;
 
     /**
@@ -19,7 +19,6 @@ class SnippetManagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
         $configPath = __DIR__ . '/../config/snippet-manager.php';
 
         $this->mergeConfigFrom($configPath, 'snippet-manager');
@@ -36,7 +35,7 @@ class SnippetManagerServiceProvider extends ServiceProvider
         });
 
         Blade::directive('s', function ($arguments) {
-             return "<?php echo App::make('snippet.manager')->get({$arguments}) ?>";
+            return "<?php echo App::make('snippet.manager')->get({$arguments}) ?>";
         });
     }
 
@@ -57,12 +56,12 @@ class SnippetManagerServiceProvider extends ServiceProvider
 
         $config['namespace'] = 'Moonshiner\SnippetManager';
 
-        $router->group($config, function($router)
-        {
+        $router->group($config, function ($router) {
             $router->get('/', 'Controller@getView');
             $router->get('/all', 'Controller@index');
             $router->put('/{snippet}', 'Controller@update');
             $router->get('search', 'Controller@search');
+            $router->get('groups', 'Controller@groups');
             $router->post('clearCache', 'Controller@clearCache');
         });
     }

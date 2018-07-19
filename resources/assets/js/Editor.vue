@@ -3,81 +3,92 @@
 </template>
 
 <script>
-import tinymce from 'tinymce';
+import tinymce from "tinymce/tinymce";
+import "tinymce/themes/modern/theme";
+import "tinymce/plugins/paste/plugin";
+import "tinymce/plugins/link/plugin";
+import "tinymce/plugins/autolink/plugin";
+import "tinymce/plugins/autoresize/plugin";
+import "tinymce/plugins/image/plugin";
+import "tinymce/plugins/anchor/plugin";
+import "tinymce/plugins/visualblocks/plugin";
+import "tinymce/plugins/media/plugin";
+import "tinymce/plugins/searchreplace/plugin";
+import "tinymce/plugins/contextmenu/plugin";
 
 export default {
-  props : {
-    id: {
-      type: String,
-      default: 'editor'
-    },
-    value: {
-      type: String,
-      default : ''
-    }
-  },
-  data: function() {
-    return {
-      myeditor: undefined
-    }
-  },
-  watch: {
-    "value": function(newVal, oldVal){
-
-      if(tinymce) {
-        if(newVal != null && oldVal == '' && this.myeditor != null) {
-          this.myeditor.setContent(newVal)
+    props: {
+        id: {
+            type: String,
+            default: "editor"
+        },
+        value: {
+            type: String,
+            default: ""
         }
-      }
-    }
-  },
-  mounted() {
+    },
+    data: function() {
+        return {
+            myeditor: undefined
+        };
+    },
+    watch: {
+        value: function(newVal, oldVal) {
+            if (tinymce) {
+                if (newVal != null && oldVal == "" && this.myeditor != null) {
+                    this.myeditor.setContent(newVal);
+                }
+            }
+        }
+    },
+    mounted() {
+        if (tinymce) {
+            tinymce.init({
+                selector: `#${this.id}`,
+                theme: "modern",
+                setup: editor => {
+                    editor.on("init", e => {
+                        if (this.value != undefined)
+                            editor.setContent(this.value);
+                        this.$emit("input", this.value);
+                    });
+                },
+                plugins: [
+                    "autoresize autolink lists link image anchor",
+                    "searchreplace visualblocks code",
+                    "media contextmenu paste code"
+                ],
+                forced_root_block: "", //!important
+                force_br_newlines: true, //!important
+                force_p_newlines: false, //!important
+                convert_urls: false,
+                relative_urls: false,
 
-    if(tinymce) {
-      tinymce.init({
-        selector: `#${this.id}`,
-        theme: 'modern',
-        setup: (editor) => {
-           editor.on('init', (e) => {
-                    if(this.value != undefined) editor.setContent(this.value)
-                    this.$emit('input', this.value)
-                })
-        },
-      plugins: [
-        'autoresize autolink lists link image anchor',
-        'searchreplace visualblocks code',
-        'media contextmenu paste code'
-      ],
-      forced_root_block : "", //!important
-      force_br_newlines : true, //!important
-      force_p_newlines : false, //!important
-  convert_urls: false,
-    relative_urls: false,
+                toolbar:
+                    "undo redo | eyecatcher | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
+                menubar: false,
+                image_advtab: true,
+                templates: [
+                    { title: "Test template 1", content: "Test 1" },
+                    { title: "Test template 2", content: "Test 2" }
+                ],
+                init_instance_callback: editor => {
+                    editor.on("KeyUp", e => {
+                        this.$emit("input", editor.getContent());
+                    });
+                    editor.on("Change", e => {
+                        this.$emit("input", editor.getContent());
+                    });
 
-        toolbar: 'undo redo | eyecatcher | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
-       menubar: false,
-        image_advtab: true,
-        templates: [
-          { title: 'Test template 1', content: 'Test 1' },
-          { title: 'Test template 2', content: 'Test 2' }
-        ],
-        init_instance_callback: (editor) => {
-          editor.on('KeyUp', (e) => {
-            this.$emit('input', editor.getContent());
-          });
-          editor.on('Change', (e) => {
-            this.$emit('input', editor.getContent());
-          });
-
-          this.myeditor = editor;
-        },
-      });
+                    this.myeditor = editor;
+                }
+            });
+        }
+    },
+    destroyed() {
+        if (tinymce) {
+            this.myeditor.destroy();
+        }
     }
-  },
-  destroyed () {
-    if(tinymce) {
-      this.myeditor.destroy();
-    }
-  }
-}
+};
 </script>

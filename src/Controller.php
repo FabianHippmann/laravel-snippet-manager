@@ -2,19 +2,18 @@
 
 namespace Moonshiner\SnippetManager;
 
+use Artisan;
+use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-
 use Illuminate\Support\Collection;
 use Moonshiner\SnippetManager\Models\Snippet;
-use Artisan;
-use App;
-use Cache;
 
 class Controller extends BaseController
 {
-    /** @var \Moonshiner\SnippetManager\SnippetManager  */
+    /** @var \Moonshiner\SnippetManager\SnippetManager */
     protected $manager;
+
     public function __construct(SnippetManager $manager)
     {
         $this->manager = $manager;
@@ -24,6 +23,7 @@ class Controller extends BaseController
     {
         return view('snippet-manager::index');
     }
+
     public function index()
     {
         $allTranslations = Snippet::take(10)->get();
@@ -37,6 +37,7 @@ class Controller extends BaseController
 
         return $allTranslations;
     }
+
     public function groups()
     {
         $namespaces = Snippet::select('namespace')->distinct()->get();
@@ -48,7 +49,7 @@ class Controller extends BaseController
     public function update(Request $request, Snippet $snippet)
     {
         $snippet->value = $request->input('value', '');
-        $path = [$snippet->locale,$snippet->namespace, $snippet->key];
+        $path = [$snippet->locale, $snippet->namespace, $snippet->key];
         $storeKey = implode('/', $path);
         Cache::flush($storeKey);
         Cache::put($storeKey, $snippet->value);
@@ -56,6 +57,7 @@ class Controller extends BaseController
 
         $snippet->save();
     }
+
     protected function loadLocales()
     {
         //Set the default locale as the first one.
@@ -67,6 +69,7 @@ class Controller extends BaseController
             $locales = $locales->all();
         }
         $locales = array_merge([config('app.locale')], $locales);
+
         return array_unique($locales);
     }
 

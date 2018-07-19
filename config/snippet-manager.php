@@ -1,5 +1,6 @@
 <?php
-return array(
+
+return [
     /*
     |--------------------------------------------------------------------------
     | Routes group config
@@ -12,4 +13,4 @@ return array(
         'prefix' => 'snippets',
         'middleware' => 'auth',
     ],
-);
+];

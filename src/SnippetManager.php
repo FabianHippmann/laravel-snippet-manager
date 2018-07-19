@@ -1,19 +1,17 @@
 <?php
+
 namespace Moonshiner\SnippetManager;
 
-use Moonshiner\SnippetManager\Manager;
-use Illuminate\Foundation\Application;
-use Moonshiner\SnippetManager\Models\Snippet;
 use Cache;
 use DB;
+use Illuminate\Foundation\Application;
+use Moonshiner\SnippetManager\Models\Snippet;
 
-/**
-*
-*/
 class SnippetManager
 {
-    private $namespace = "";
+    private $namespace = '';
     protected $app;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -29,7 +27,7 @@ class SnippetManager
 
     public function get($key, $default = '', $namespace = null)
     {
-        if ($namespace !== null) {
+        if (null !== $namespace) {
             $this->namespace = $namespace;
         }
 
@@ -37,10 +35,10 @@ class SnippetManager
         $storeKey = implode('/', $path);
         $manager = $this;
         $namespace = $this->namespace;
-        xdebug_break();
         $snippet = Cache::rememberForever($storeKey, function () use ($namespace, $key, $default, $manager) {
             return $manager->fetch($namespace, $key, $default);
         });
+
         return $snippet;
     }
 
@@ -50,29 +48,32 @@ class SnippetManager
         if ($key) {
             $query->where('key', $key);
         }
-        if ($namespace != '') {
+        if ('' != $namespace) {
             $query->where('namespace', $namespace);
         }
         $query->where('locale', $this->app['config']['app.locale']);
         if ($key) {
             $snippetValue = $query->pluck('value')->first();
-            if (!$snippetValue) {
+            if (! $snippetValue) {
                 return $this->missingSnippet($namespace, $key, $default);
             }
+
             return $snippetValue;
         }
         $valuesByNamespace = [$namespace => $query->pluck('value', 'key')->toArray()];
 
         return $valuesByNamespace;
     }
+
     public function missingSnippet($namespace, $key, $value)
     {
-        Snippet::firstOrCreate(array(
+        Snippet::firstOrCreate([
             'locale' => $this->app['config']['app.locale'],
             'namespace' => $namespace,
             'key' => $key,
-            'value' => $value
-        ));
+            'value' => $value,
+        ]);
+
         return $value;
     }
 }

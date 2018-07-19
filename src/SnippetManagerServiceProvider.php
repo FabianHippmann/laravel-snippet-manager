@@ -2,11 +2,9 @@
 
 namespace Moonshiner\SnippetManager;
 
+use Blade;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-
-use Blade;
-use App;
 
 class SnippetManagerServiceProvider extends ServiceProvider
 {
@@ -14,17 +12,14 @@ class SnippetManagerServiceProvider extends ServiceProvider
 
     /**
      * Register any package services.
-     *
-     * @return void
      */
     public function register()
     {
-        $configPath = __DIR__ . '/../config/snippet-manager.php';
+        $configPath = __DIR__.'/../config/snippet-manager.php';
 
         $this->mergeConfigFrom($configPath, 'snippet-manager');
 
         $this->publishes([$configPath => config_path('snippet-manager.php')], 'config');
-
 
         $this->app->singleton('snippet.manager', function ($app) {
             return new SnippetManager($app);
@@ -65,10 +60,11 @@ class SnippetManagerServiceProvider extends ServiceProvider
             $router->post('clearCache', 'Controller@clearCache');
         });
     }
+
     public function provides()
     {
         return [
-            'snippet.manager'
+            'snippet.manager',
         ];
     }
 }

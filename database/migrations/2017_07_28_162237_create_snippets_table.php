@@ -1,17 +1,16 @@
 <?php
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
-class CreateSnippetsTable extends Migration {
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateSnippetsTable extends Migration
+{
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-        Schema::create('ms_snippets', function(Blueprint $table)
-        {
+        Schema::create('ms_snippets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('locale');
             $table->string('namespace');
@@ -20,10 +19,9 @@ class CreateSnippetsTable extends Migration {
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

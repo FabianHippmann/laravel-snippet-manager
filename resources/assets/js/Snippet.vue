@@ -30,7 +30,6 @@
         class="snippet__editor"
         v-show="editorToggleState">
         <editor
-          :id="editorId"
           :value="item.value"
           @input="updateValue"/>
       </div>
@@ -44,7 +43,7 @@ export default {
   computed: {
     editorId() {
       let namespace = this.item.namespace.replace(/\//g, "-");
-      return `${this.item.locale}-${namespace}-${this.item.key}`;
+      return `${Math.random().toString(36).substr(2, 5)}-${this.item.locale}-${namespace}-${this.item.key}`;
     }
   },
   mounted() {},

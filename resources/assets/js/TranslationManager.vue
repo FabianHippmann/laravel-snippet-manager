@@ -105,7 +105,6 @@ export default {
             let snippets = this.snippets;
             Object.keys(this.filter).forEach(key => {
                 if(this.filter[key]){
-                    debugger;
                     snippets = snippets.filter(snippet => (snippet[key] == this.filter[key]))
                 }
             });
@@ -126,7 +125,6 @@ export default {
         },
         selectFilter(type, tag){
             this.filter[type] = tag;
-            debugger;
         },
         getGroups() {
             axios.get(this.prefix + "/groups").then(({data}) => {

@@ -18,8 +18,12 @@ import "tinymce/plugins/image/plugin";
 import "tinymce/plugins/anchor/plugin";
 import "tinymce/plugins/visualblocks/plugin";
 import "tinymce/plugins/media/plugin";
+import "tinymce/plugins/code/plugin";
+import "tinymce/plugins/lists/plugin";
 import "tinymce/plugins/searchreplace/plugin";
 import "tinymce/plugins/contextmenu/plugin";
+import "tinymce/skins/lightgray/skin.min.css";
+import "tinymce/skins/lightgray/content.min.css";
 
 import Editor from "@tinymce/tinymce-vue";
 export default {

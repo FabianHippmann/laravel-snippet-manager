@@ -37,4 +37,4 @@ const Snippet = {
         Vue.prototype.$snippet = snippet;
     }
 };
-export default Snippet;
+export { Snippet as default, snippet };

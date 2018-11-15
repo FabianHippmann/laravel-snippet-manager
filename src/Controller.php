@@ -51,11 +51,8 @@ class Controller extends BaseController
         $snippet->value = $request->input('value', '');
         $path = [$snippet->locale, $snippet->namespace, $snippet->key];
         $storeKey = implode('/', $path);
-        Cache::flush($storeKey);
-        Cache::put($storeKey, $snippet->value);
-        $this->clearCache();
-
         $snippet->save();
+        $this->updateCache($storeKey, $snippet->value);
     }
 
     protected function loadLocales()
@@ -73,8 +70,11 @@ class Controller extends BaseController
         return array_unique($locales);
     }
 
-    public function clearCache()
-    {
-        Artisan::call('view:clear');
+    private function updateCache($key, $value) {
+        if( Cache::has($key) ) {
+            Cache::forget($key);
+        }
+        Cache::put($key, $value);
+        Cache::forever($key, $value);
     }
 }

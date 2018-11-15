@@ -16,11 +16,11 @@
       <div class="snippet__actions">
         <div
           class="snippet__toggle"
-          @click="toggle">Show</div>
+          @click="toggle">Edit</div>
         <div
           class="snippet__save"
           @click="save"
-          v-show="editorToggleState && showSave">Speichern</div>
+          v-show="editorToggleState && showSave">Update</div>
       </div>
     </div>
     <div
@@ -93,11 +93,6 @@ export default {
   flex: 0 0 120px;
   color: #b7b7b7;
 }
-.snippet__toggle {
-  padding: 5px 10px;
-  border: 1px solid #22a7f0;
-  cursor: pointer;
-}
 .snippet__locale {
   flex: 0 0 50px;
 }
@@ -112,8 +107,18 @@ export default {
   padding: 5px 10px;
   word-break: break-all;
 }
-
+.snippet__toggle,
+.snippet__save {
+  padding: 5px 10px;
+  border: 1px solid #22a7f0;
+  cursor: pointer;
+  margin: 0 2.5px;
+}
+.snippet__save {
+  border: 1px solid green;
+}
 .snippet__actions {
+  display: flex;
   justify-self: flex-end;
 }
 </style>

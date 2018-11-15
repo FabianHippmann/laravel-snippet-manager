@@ -17,6 +17,20 @@ class SnippetManager
         $this->app = $app;
     }
 
+    private function getKeyName($locale, $key) {
+        $path = [$this->getLocale($locale), $this->namespace, $key];
+        return implode('/', $path);
+    }
+
+    /**
+     * @param String $locale
+     * @return String
+     */
+    private function getLocale($locale = null)
+    {
+        return $locale ? $locale : $this->app['config']['app.locale'];
+    }
+
     /**
      * @param type $namespace
      */
@@ -25,25 +39,27 @@ class SnippetManager
         $this->namespace = $namespace;
     }
 
-    public function get($key, $default = '', $namespace = null)
+    public function get($key, $default = '', $namespace = null, $locale = null)
     {
         if (null !== $namespace) {
             $this->namespace = $namespace;
         }
-
-        $path = [$this->app['config']['app.locale'], $this->namespace, $key];
-        $storeKey = implode('/', $path);
+        
+        $locale = $this->getLocale($locale);
+        $storeKey = $this->getKeyName($locale, $key);
+        $default = $default ? $default : $storeKey;
         $manager = $this;
         $namespace = $this->namespace;
-        $snippet = Cache::rememberForever($storeKey, function () use ($namespace, $key, $default, $manager) {
-            return $manager->fetch($namespace, $key, $default);
+        
+        $snippet = Cache::rememberForever($storeKey, function () use ($namespace, $key, $default, $manager, $locale) {
+            return $manager->fetch($namespace, $key, $default, $locale);
         });
-
         return $snippet;
     }
 
-    public function fetch($namespace, $key = null, $default = '')
+    public function fetch($namespace, $key = null, $default = null, $locale = null)
     {
+        $locale = $this->getLocale($locale);
         $query = DB::table('ms_snippets');
         if ($key) {
             $query->where('key', $key);
@@ -51,11 +67,11 @@ class SnippetManager
         if ('' != $namespace) {
             $query->where('namespace', $namespace);
         }
-        $query->where('locale', $this->app['config']['app.locale']);
+        $query->where('locale', $locale);
         if ($key) {
             $snippetValue = $query->pluck('value')->first();
             if (! $snippetValue) {
-                return $this->missingSnippet($namespace, $key, $default);
+                return $this->missingSnippet($namespace, $key, $default, $locale);
             }
 
             return $snippetValue;
@@ -65,15 +81,16 @@ class SnippetManager
         return $valuesByNamespace;
     }
 
-    public function missingSnippet($namespace, $key, $value)
+    public function missingSnippet($namespace, $key, $value, $locale = null)
     {
+        $locale = $this->getLocale($locale);
         Snippet::firstOrCreate([
-            'locale' => $this->app['config']['app.locale'],
+            'locale' => $locale,
             'namespace' => $namespace,
             'key' => $key,
             'value' => $value,
         ]);
-
+        
         return $value;
     }
 }

@@ -1,10 +1,11 @@
 <template>
-  <editor
-    :plugins="settings.plugins"
-    :toolbar="settings.toolbar"
-    :init="settings"
-    :initial-value="value"
-    @input="changed"/>
+    <editor
+        :plugins="settings.plugins"
+        :toolbar="settings.toolbar"
+        :init="settings"
+        :initial-value="value"
+        @input="changed"
+    />
 </template>
 
 <script>

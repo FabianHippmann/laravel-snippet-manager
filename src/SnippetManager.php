@@ -57,10 +57,10 @@ class SnippetManager
         return $snippet;
     }
 
-    public function fetch($namespace, $key = null, $default = '', $locale = null)
+    public function fetch($namespace, $key = null, $default = null, $locale = null)
     {
         $locale = $this->getLocale($locale);
-        $default = $this->getKeyName($locale, $key);
+        $default = $default ? $default : $this->getKeyName($locale, $key);
         $query = DB::table('ms_snippets');
         if ($key) {
             $query->where('key', $key);

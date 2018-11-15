@@ -17,6 +17,11 @@ class SnippetManager
         $this->app = $app;
     }
 
+    private function getKeyName($locale, $key) {
+        $path = [$this->getLocale($locale), $this->namespace, $key];
+        return implode('/', $path);
+    }
+
     /**
      * @param String $locale
      * @return String
@@ -34,16 +39,15 @@ class SnippetManager
         $this->namespace = $namespace;
     }
 
-    public function get($key, $default = 'No found translation', $namespace = null, $locale = null)
+    public function get($key, $default = '', $namespace = null, $locale = null)
     {
         if (null !== $namespace) {
             $this->namespace = $namespace;
         }
         
         $locale = $this->getLocale($locale);
-        $path = [$this->getLocale($locale), $this->namespace, $key];
-        $storeKey = implode('/', $path);
-        
+        $storeKey = $this->getKeyName($locale, $key);
+        $default = $default ? $default : $storeKey;
         $manager = $this;
         $namespace = $this->namespace;
         
@@ -53,9 +57,10 @@ class SnippetManager
         return $snippet;
     }
 
-    public function fetch($namespace, $key = null, $default = 'No found translation', $locale = null)
+    public function fetch($namespace, $key = null, $default = '', $locale = null)
     {
         $locale = $this->getLocale($locale);
+        $default = $this->getKeyName($locale, $key);
         $query = DB::table('ms_snippets');
         if ($key) {
             $query->where('key', $key);

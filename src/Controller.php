@@ -52,7 +52,7 @@ class Controller extends BaseController
         $path = [$snippet->locale, $snippet->namespace, $snippet->key];
         $storeKey = implode('/', $path);
         $snippet->save();
-        $this->updateCache($storeKey, $snippet->value);
+        self::updateCache($storeKey, $snippet->value);
     }
 
     protected function loadLocales()
@@ -70,7 +70,7 @@ class Controller extends BaseController
         return array_unique($locales);
     }
 
-    private function updateCache($key, $value) {
+    static function updateCache($key, $value) {
         if( Cache::has($key) ) {
             Cache::forget($key);
         }

@@ -16,11 +16,11 @@
       <div class="snippet__actions">
         <div
           class="snippet__toggle"
-          @click="toggle">Aktualisieren</div>
+          @click="toggle">Edit</div>
         <div
           class="snippet__save"
           @click="save"
-          v-show="editorToggleState && showSave">Speichern</div>
+          v-show="editorToggleState && showSave">Update</div>
       </div>
     </div>
     <div

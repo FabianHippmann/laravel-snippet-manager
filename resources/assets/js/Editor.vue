@@ -1,11 +1,11 @@
 <template>
-    <editor
-        :plugins="settings.plugins"
-        :toolbar="settings.toolbar"
-        :init="settings"
-        :initial-value="value"
-        @input="changed"
-    />
+  <editor
+    :plugins="settings.plugins"
+    :toolbar="settings.toolbar"
+    :init="settings"
+    :initial-value="value"
+    @input="changed"
+  />
 </template>
 
 <script>
@@ -28,41 +28,42 @@ import "tinymce/skins/lightgray/content.min.css";
 
 import Editor from "@tinymce/tinymce-vue";
 export default {
-    components: {
-        editor: Editor // <- Important part
-    },
-    props: {
-        value: {
-            type: String,
-            default: ""
-        }
-    },
-    data: () => ({
-        settings: {
-            plugins: [
-                "autoresize autolink lists link image anchor",
-                "searchreplace visualblocks code",
-                "media contextmenu paste code"
-            ],
-            toolbar:
-                "undo redo | eyecatcher | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
-            theme: "modern",
-
-            forced_root_block: "", //!important
-            force_br_newlines: true, //!important
-            force_p_newlines: false, //!important
-            convert_urls: false,
-            relative_urls: false,
-
-            menubar: false,
-            image_advtab: true
-        }
-    }),
-
-    methods: {
-        changed(value) {
-            this.$emit("input", value);
-        }
+  components: {
+    editor: Editor // <- Important part
+  },
+  props: {
+    value: {
+      type: String,
+      default: ""
     }
+  },
+  data: () => ({
+    settings: {
+      plugins: [
+        "autoresize autolink lists link image anchor",
+        "searchreplace visualblocks code",
+        "media contextmenu paste code"
+      ],
+      toolbar:
+        "undo redo | eyecatcher | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code",
+      theme: "modern",
+
+      forced_root_block: "", //!important
+      force_br_newlines: true, //!important
+      force_p_newlines: false, //!important
+      convert_urls: false,
+      relative_urls: false,
+      entity_encoding: "raw",
+
+      menubar: false,
+      image_advtab: true
+    }
+  }),
+
+  methods: {
+    changed(value) {
+      this.$emit("input", value);
+    }
+  }
 };
 </script>

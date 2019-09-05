@@ -24,14 +24,6 @@ class SnippetManagerServiceProvider extends ServiceProvider
         $this->app->singleton('snippet.manager', function ($app) {
             return new SnippetManager($app);
         });
-
-        Blade::directive('namespace', function ($arguments) {
-            return "<?php App::make('snippet.manager')->setNameSpace({$arguments}) ?>";
-        });
-
-        Blade::directive('s', function ($arguments) {
-            return "<?php echo App::make('snippet.manager')->get({$arguments}) ?>";
-        });
     }
 
     public function boot(Router $router)
@@ -58,6 +50,14 @@ class SnippetManagerServiceProvider extends ServiceProvider
             $router->get('search', 'Controller@search');
             $router->get('groups', 'Controller@groups');
             $router->post('clearCache', 'Controller@clearCache');
+        });
+        
+        Blade::directive('namespace', function ($arguments) {
+            return "<?php App::make('snippet.manager')->setNameSpace({$arguments}) ?>";
+        });
+
+        Blade::directive('s', function ($arguments) {
+            return "<?php echo App::make('snippet.manager')->get({$arguments}) ?>";
         });
     }
 
